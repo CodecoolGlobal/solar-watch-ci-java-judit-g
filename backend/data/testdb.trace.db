@@ -1,0 +1,6 @@
+2024-09-27 23:35:29.870929+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CITY_ENTITY CITY_ENTITY [*]USER_ENTITY"; SQL statement:
+SELECT * FROM CITY_ENTITY CITY_ENTITY USER_ENTITY [42000-232]
+2024-09-27 23:35:48.334830+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CITY_ENTITYCITY_ENTITY" not found; SQL statement:
+SELECT * FROM CITY_ENTITYCITY_ENTITY [42102-232]
