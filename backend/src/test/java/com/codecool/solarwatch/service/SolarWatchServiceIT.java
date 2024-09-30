@@ -46,31 +46,25 @@ public class SolarWatchServiceIT {
 
     @Test
     public void whenValidCityName_thenSolarInformationShouldBeFound() {
-        // Mock the API response for city information
         CityModel[] cityModel = {new CityModel("TestCity", 12.34, 56.78, "TestState", "TestCountry")};
         SunriseSunsetResultsModel resultsModel = new SunriseSunsetResultsModel(new SunriseSunsetTimeModel("06:00", "18:00"));
 
-        // Set up the mocks correctly
         final var uriSpecMock = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
         final var requestHeadersSpecMock = Mockito.mock(WebClient.RequestHeadersSpec.class);
         final var responseSpecMock = Mockito.mock(WebClient.ResponseSpec.class);
 
-        // Mock the first API call to retrieve city information
         Mockito.when(webClient.get()).thenReturn(uriSpecMock);
         Mockito.when(uriSpecMock.uri(ArgumentMatchers.<String>notNull())).thenReturn(requestHeadersSpecMock);
         Mockito.when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         Mockito.when(responseSpecMock.bodyToMono(CityModel[].class)).thenReturn(Mono.just(cityModel));
 
-        // Mock the second API call to retrieve sunrise/sunset information
         Mockito.when(webClient.get()).thenReturn(uriSpecMock);
         Mockito.when(uriSpecMock.uri(ArgumentMatchers.<String>notNull())).thenReturn(requestHeadersSpecMock);
         Mockito.when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         Mockito.when(responseSpecMock.bodyToMono(SunriseSunsetResultsModel.class)).thenReturn(Mono.just(resultsModel));
 
-        // Call the service method
         SolarInformationDTO solarInformation = solarWatchService.provideSolarInformation("TestCity", testDate);
 
-        // Assertions to verify the output
         assertThat(solarInformation.sunrise()).isEqualTo("06:00");
         assertThat(solarInformation.sunset()).isEqualTo("18:00");
         assertThat(solarInformation.cityName()).isEqualTo("TestCity");
