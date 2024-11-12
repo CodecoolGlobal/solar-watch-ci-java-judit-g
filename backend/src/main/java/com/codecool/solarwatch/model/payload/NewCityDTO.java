@@ -1,4 +1,4 @@
-package com.codecool.solarwatch.model.dto;
+package com.codecool.solarwatch.model.payload;
 
 public record NewCityDTO(
         String cityName,

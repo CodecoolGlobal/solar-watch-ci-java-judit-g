@@ -1,20 +1,14 @@
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.model.dto.CityDTO;
-import com.codecool.solarwatch.model.dto.NewCityDTO;
-import com.codecool.solarwatch.model.dto.NewSunriseSunsetTimeDTO;
-import com.codecool.solarwatch.model.dto.SunriseSunsetTimeDTO;
-import com.codecool.solarwatch.model.payload.UserRequest;
+import com.codecool.solarwatch.model.payload.*;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import com.codecool.solarwatch.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final AdminService adminService;
@@ -25,8 +19,8 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> createAdmin(@RequestBody UserRequest userRequest) {
-        return adminService.createAdmin(userRequest);
+    public ResponseEntity<Void> createAdmin(@RequestBody AppUserRequestDTO appUserRequestDTO) {
+        return adminService.createAdmin(appUserRequestDTO);
     }
 
     @PostMapping("/create/sunrise-sunset-time")

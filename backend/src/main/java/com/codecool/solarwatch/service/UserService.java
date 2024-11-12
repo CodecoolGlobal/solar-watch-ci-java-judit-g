@@ -1,11 +1,11 @@
 package com.codecool.solarwatch.service;
 
 import com.codecool.solarwatch.model.entity.Role;
-import com.codecool.solarwatch.model.entity.UserEntity;
-import com.codecool.solarwatch.model.payload.CreateUserRequest;
+import com.codecool.solarwatch.model.entity.AppUser;
+import com.codecool.solarwatch.model.payload.NewAppUserDTO;
 import com.codecool.solarwatch.model.payload.JwtResponse;
-import com.codecool.solarwatch.model.payload.UserRequest;
-import com.codecool.solarwatch.repository.UserRepository;
+import com.codecool.solarwatch.model.payload.AppUserRequestDTO;
+import com.codecool.solarwatch.repository.AppUserRepository;
 import com.codecool.solarwatch.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +25,14 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
+    public UserService(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
+        this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
@@ -40,13 +40,13 @@ public class UserService {
 
     //in case user couldn't be created, should it throw an exception? should it return a different HttpStatus? What's the correct way of handling this issue?
     //Todo: handle it either way!
-    public ResponseEntity<Void> createUser(CreateUserRequest signUpRequest) {
-        UserEntity userEntity = new UserEntity(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), Set.of(Role.ROLE_USER));
-        userRepository.save(userEntity);
+    public ResponseEntity<Void> createUser(NewAppUserDTO signUpRequest) {
+        AppUser appUser = new AppUser(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()), Set.of(Role.ROLE_USER));
+        appUserRepository.save(appUser);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<?> authenticateUser(UserRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(AppUserRequestDTO loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 

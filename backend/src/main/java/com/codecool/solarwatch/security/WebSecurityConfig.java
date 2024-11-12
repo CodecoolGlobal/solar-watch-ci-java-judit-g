@@ -64,10 +64,12 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("api/**").permitAll()
+                        auth.requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/information/**").hasRole("USER")
+                                .requestMatchers("/api/user/**").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated()
-
                 );
 
         http.authenticationProvider(authenticationProvider());

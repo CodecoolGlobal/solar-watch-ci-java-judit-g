@@ -3,7 +3,7 @@ package com.codecool.solarwatch.service;
 import com.codecool.solarwatch.model.CityModel;
 import com.codecool.solarwatch.model.SunriseSunsetResultsModel;
 import com.codecool.solarwatch.model.SunriseSunsetTimeModel;
-import com.codecool.solarwatch.model.dto.SolarInformationDTO;
+import com.codecool.solarwatch.model.payload.SolarInformationDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

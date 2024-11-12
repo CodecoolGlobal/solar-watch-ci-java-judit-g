@@ -5,9 +5,9 @@ import com.codecool.solarwatch.exception.InvalidCityException;
 import com.codecool.solarwatch.model.CityModel;
 import com.codecool.solarwatch.model.SunriseSunsetResultsModel;
 import com.codecool.solarwatch.model.SunriseSunsetTimeModel;
-import com.codecool.solarwatch.model.dto.SolarInformationDTO;
-import com.codecool.solarwatch.model.entity.CityEntity;
-import com.codecool.solarwatch.model.entity.SunriseSunsetTimeEntity;
+import com.codecool.solarwatch.model.payload.SolarInformationDTO;
+import com.codecool.solarwatch.model.entity.City;
+import com.codecool.solarwatch.model.entity.SunriseSunsetTime;
 import com.codecool.solarwatch.repository.CityRepository;
 import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import org.slf4j.Logger;
@@ -69,41 +69,41 @@ public class SolarWatchService {
         return response.results();
     }
 
-    private Optional<CityEntity> findCityByName(String name) {
+    private Optional<City> findCityByName(String name) {
         return cityRepository.findByName(name);
     }
 
-    private Optional<SunriseSunsetTimeEntity> findSunriseSunsetTimeByDate(LocalDate localDate) {
+    private Optional<SunriseSunsetTime> findSunriseSunsetTimeByDate(LocalDate localDate) {
         return sunriseSunsetTimeRepository.findByDate(localDate);
     }
 
-    private SunriseSunsetTimeEntity saveSunriseSunsetTime(SunriseSunsetTimeEntity sunriseSunsetTimeEntity) {
-        return sunriseSunsetTimeRepository.save(sunriseSunsetTimeEntity);
+    private SunriseSunsetTime saveSunriseSunsetTime(SunriseSunsetTime sunriseSunsetTime) {
+        return sunriseSunsetTimeRepository.save(sunriseSunsetTime);
     }
 
-    private CityEntity saveCity(CityEntity cityEntity) {
-        return cityRepository.save(cityEntity);
+    private City saveCity(City city) {
+        return cityRepository.save(city);
     }
 
-    private SunriseSunsetTimeEntity fetchAndSaveSunriseSunsetTime(CityEntity cityEntity, LocalDate date) {
-        SunriseSunsetTimeModel sunriseSunsetTimeModel = fetchSunriseSunsetTime(cityEntity.getLatitude(), cityEntity.getLongitude(), date);
-        SunriseSunsetTimeEntity sunriseSunsetTimeEntity = solarWatchMapper.mapToSunriseSunsetTime(sunriseSunsetTimeModel, date, cityEntity);
-        return saveSunriseSunsetTime(sunriseSunsetTimeEntity);
+    private SunriseSunsetTime fetchAndSaveSunriseSunsetTime(City city, LocalDate date) {
+        SunriseSunsetTimeModel sunriseSunsetTimeModel = fetchSunriseSunsetTime(city.getLatitude(), city.getLongitude(), date);
+        SunriseSunsetTime sunriseSunsetTime = solarWatchMapper.mapToSunriseSunsetTime(sunriseSunsetTimeModel, date, city);
+        return saveSunriseSunsetTime(sunriseSunsetTime);
     }
 
     public SolarInformationDTO provideSolarInformation(String cityName, LocalDate date) {
-        Optional<CityEntity> optionalCity = findCityByName(cityName);
+        Optional<City> optionalCity = findCityByName(cityName);
 
         if (optionalCity.isPresent()) {
-            CityEntity cityEntity = optionalCity.get();
-            Optional<SunriseSunsetTimeEntity> optionalSunriseSunsetTime = findSunriseSunsetTimeByDate(date);
+            City city = optionalCity.get();
+            Optional<SunriseSunsetTime> optionalSunriseSunsetTime = findSunriseSunsetTimeByDate(date);
 
             if (optionalSunriseSunsetTime.isPresent()) {
-                SunriseSunsetTimeEntity sunriseSunsetTimeEntity = optionalSunriseSunsetTime.get();
-                return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(sunriseSunsetTimeEntity);
+                SunriseSunsetTime sunriseSunsetTime = optionalSunriseSunsetTime.get();
+                return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(sunriseSunsetTime);
             }
-            SunriseSunsetTimeEntity savedSunriseSunsetTimeEntity = fetchAndSaveSunriseSunsetTime(cityEntity, date);
-            return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(savedSunriseSunsetTimeEntity);
+            SunriseSunsetTime savedSunriseSunsetTime = fetchAndSaveSunriseSunsetTime(city, date);
+            return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(savedSunriseSunsetTime);
         }
         Optional<CityModel> optionalCityModel = fetchCityModel(cityName);
 
@@ -111,11 +111,11 @@ public class SolarWatchService {
             throw new InvalidCityException("City with the name provided does not exist");
         }
         CityModel cityModel = optionalCityModel.get();
-        CityEntity cityEntity = solarWatchMapper.mapCityModelToCity(cityModel);
-        CityEntity savedCityEntity = saveCity(cityEntity);
-        SunriseSunsetTimeEntity savedSunriseSunsetTimeEntity = fetchAndSaveSunriseSunsetTime(savedCityEntity, date);
+        City city = solarWatchMapper.mapCityModelToCity(cityModel);
+        City savedCity = saveCity(city);
+        SunriseSunsetTime savedSunriseSunsetTime = fetchAndSaveSunriseSunsetTime(savedCity, date);
 
-        return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(savedSunriseSunsetTimeEntity);
+        return solarWatchMapper.mapSunriseSunsetTimeToSolarInformationDTO(savedSunriseSunsetTime);
     }
 }
 

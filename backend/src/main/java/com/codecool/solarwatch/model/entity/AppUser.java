@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class UserEntity {
+public class AppUser {
 
     @Id
     @GeneratedValue
@@ -27,11 +27,11 @@ public class UserEntity {
     @Column(name = "role_user")
     private Set<Role> roles = new HashSet<>();
 
-    public UserEntity() {
+    public AppUser() {
 
     }
 
-    public UserEntity(String username, String password, Set<Role> roles) {
+    public AppUser(String username, String password, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Entity
-public class CityEntity {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class CityEntity {
     private String country;
 
     @Setter
-    @OneToMany(mappedBy = "cityEntity", cascade = CascadeType.ALL)
-    private List<SunriseSunsetTimeEntity> sunriseSunsetTimes;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<SunriseSunsetTime> sunriseSunsetTimes;
 
-    public CityEntity() {
+    public City() {
     }
 
-    public CityEntity(String name, double longitude, double latitude, String state, String country) {
+    public City(String name, double longitude, double latitude, String state, String country) {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;

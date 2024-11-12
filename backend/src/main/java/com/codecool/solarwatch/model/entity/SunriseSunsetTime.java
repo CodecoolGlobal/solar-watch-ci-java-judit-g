@@ -8,11 +8,10 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-public class SunriseSunsetTimeEntity {
+public class SunriseSunsetTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
 
     @Setter
@@ -22,20 +21,20 @@ public class SunriseSunsetTimeEntity {
     private LocalDate date;
 
     @ManyToOne
-    private CityEntity cityEntity;
+    private City city;
 
-    public SunriseSunsetTimeEntity() {
+    public SunriseSunsetTime() {
     }
 
-    public SunriseSunsetTimeEntity(String sunset, String sunrise, LocalDate date, CityEntity cityEntity) {
+    public SunriseSunsetTime(String sunset, String sunrise, LocalDate date, City city) {
         this.sunset = sunset;
         this.sunrise = sunrise;
         this.date = date;
-        this.cityEntity = cityEntity;
+        this.city = city;
     }
 
     public String getCityName() {
-        return cityEntity.getName();
+        return city.getName();
     }
 
 }

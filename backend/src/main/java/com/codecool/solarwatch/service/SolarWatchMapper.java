@@ -2,9 +2,9 @@ package com.codecool.solarwatch.service;
 
 import com.codecool.solarwatch.model.CityModel;
 import com.codecool.solarwatch.model.SunriseSunsetTimeModel;
-import com.codecool.solarwatch.model.dto.SolarInformationDTO;
-import com.codecool.solarwatch.model.entity.CityEntity;
-import com.codecool.solarwatch.model.entity.SunriseSunsetTimeEntity;
+import com.codecool.solarwatch.model.payload.SolarInformationDTO;
+import com.codecool.solarwatch.model.entity.City;
+import com.codecool.solarwatch.model.entity.SunriseSunsetTime;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,17 +12,17 @@ import java.time.LocalDate;
 @Component
 public class SolarWatchMapper {
 
-    public SolarInformationDTO mapSunriseSunsetTimeToSolarInformationDTO(SunriseSunsetTimeEntity sunriseSunsetTimeEntity) {
+    public SolarInformationDTO mapSunriseSunsetTimeToSolarInformationDTO(SunriseSunsetTime sunriseSunsetTime) {
         return new SolarInformationDTO(
-                sunriseSunsetTimeEntity.getCityName(),
-                sunriseSunsetTimeEntity.getDate(),
-                sunriseSunsetTimeEntity.getSunrise(),
-                sunriseSunsetTimeEntity.getSunset()
+                sunriseSunsetTime.getCityName(),
+                sunriseSunsetTime.getDate(),
+                sunriseSunsetTime.getSunrise(),
+                sunriseSunsetTime.getSunset()
         );
     }
 
-    public CityEntity mapCityModelToCity(CityModel cityModel) {
-        return new CityEntity(
+    public City mapCityModelToCity(CityModel cityModel) {
+        return new City(
                 cityModel.name(),
                 cityModel.lon(),
                 cityModel.lat(),
@@ -31,12 +31,12 @@ public class SolarWatchMapper {
         );
     }
 
-    public SunriseSunsetTimeEntity mapToSunriseSunsetTime(SunriseSunsetTimeModel sunriseSunsetTimeModel, LocalDate localDate, CityEntity cityEntity) {
-        return new SunriseSunsetTimeEntity(
+    public SunriseSunsetTime mapToSunriseSunsetTime(SunriseSunsetTimeModel sunriseSunsetTimeModel, LocalDate localDate, City city) {
+        return new SunriseSunsetTime(
                 sunriseSunsetTimeModel.sunset(),
                 sunriseSunsetTimeModel.sunrise(),
                 localDate,
-                cityEntity
+                city
         );
     }
 }

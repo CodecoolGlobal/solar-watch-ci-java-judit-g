@@ -1,9 +1,8 @@
 package com.codecool.solarwatch.controller;
 
-import com.codecool.solarwatch.model.payload.CreateUserRequest;
-import com.codecool.solarwatch.model.payload.UserRequest;
+import com.codecool.solarwatch.model.payload.NewAppUserDTO;
+import com.codecool.solarwatch.model.payload.AppUserRequestDTO;
 import com.codecool.solarwatch.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,12 +20,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> createUser(@RequestBody CreateUserRequest signUpRequest) {
+    public ResponseEntity<Void> createUser(@RequestBody NewAppUserDTO signUpRequest) {
         return userService.createUser(signUpRequest);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserRequest loginRequest) {
+    public ResponseEntity<?> loginUser(@RequestBody AppUserRequestDTO loginRequest) {
         return userService.authenticateUser(loginRequest);
     }
 }
