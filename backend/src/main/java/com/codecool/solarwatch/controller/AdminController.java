@@ -1,7 +1,6 @@
 package com.codecool.solarwatch.controller;
 
 import com.codecool.solarwatch.model.payload.*;
-import com.codecool.solarwatch.repository.SunriseSunsetTimeRepository;
 import com.codecool.solarwatch.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @Autowired
-    public AdminController(AdminService adminService, SunriseSunsetTimeRepository sunriseSunsetTimeRepository) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
 
